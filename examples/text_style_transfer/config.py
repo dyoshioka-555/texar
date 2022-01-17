@@ -13,91 +13,84 @@ display = 500  # Display the training results every N training steps.
 # very large value to disable it).
 display_eval = 1e10
 
-sample_path = './samples'
-checkpoint_path = './checkpoints'
-restore = ''   # Model snapshot to restore from
+sample_path = "./samples"
+checkpoint_path = "./checkpoints"
+restore = ""  # Model snapshot to restore from
 
 lambda_g = 0.1  # Weight of the classification loss
 gamma_decay = 0.5  # Gumbel-softmax temperature anneal rate
 
 train_data = {
-    'batch_size': 64,
+    "batch_size": 64,
     # 'seed': 123,
-    'datasets': [
+    "datasets": [
         {
-            'files': './data/yelp/sentiment.train.text',
-            'vocab_file': './data/yelp/vocab',
-            'data_name': ''
+            "files": "./data/csj_filler/sentiment.train.text",
+            "vocab_file": "./data/csj_filler/vocab",
+            "data_name": "",
         },
         {
-            'files': './data/yelp/sentiment.train.labels',
-            'data_type': 'int',
-            'data_name': 'labels'
-        }
+            "files": "./data/csj_filler/sentiment.train.labels",
+            "data_type": "int",
+            "data_name": "labels",
+        },
     ],
-    'name': 'train'
+    "name": "train",
 }
 
 val_data = copy.deepcopy(train_data)
-val_data['datasets'][0]['files'] = './data/yelp/sentiment.dev.text'
-val_data['datasets'][1]['files'] = './data/yelp/sentiment.dev.labels'
+val_data["datasets"][0]["files"] = "./data/csj_filler/sentiment.dev.text"
+val_data["datasets"][1]["files"] = "./data/csj_filler/sentiment.dev.labels"
 
 test_data = copy.deepcopy(train_data)
-test_data['datasets'][0]['files'] = './data/yelp/sentiment.test.text'
-test_data['datasets'][1]['files'] = './data/yelp/sentiment.test.labels'
+test_data["datasets"][0]["files"] = "./data/csj_filler/sentiment.test.text"
+test_data["datasets"][1]["files"] = "./data/csj_filler/sentiment.test.labels"
 
 model = {
-    'dim_c': 200,
-    'dim_z': 500,
-    'embedder': {
-        'dim': 100,
+    "dim_c": 200,
+    "dim_z": 500,
+    "embedder": {
+        "dim": 100,
     },
-    'encoder': {
-        'rnn_cell': {
-            'type': 'GRUCell',
-            'kwargs': {
-                'num_units': 700
-            },
-            'dropout': {
-                'input_keep_prob': 0.5
-            }
+    "encoder": {
+        "rnn_cell": {
+            "type": "GRUCell",
+            "kwargs": {"num_units": 700},
+            "dropout": {"input_keep_prob": 0.5},
         }
     },
-    'decoder': {
-        'rnn_cell': {
-            'type': 'GRUCell',
-            'kwargs': {
-                'num_units': 700,
+    "decoder": {
+        "rnn_cell": {
+            "type": "GRUCell",
+            "kwargs": {
+                "num_units": 700,
             },
-            'dropout': {
-                'input_keep_prob': 0.5,
-                'output_keep_prob': 0.5
-            },
+            "dropout": {"input_keep_prob": 0.5, "output_keep_prob": 0.5},
         },
-        'attention': {
-            'type': 'BahdanauAttention',
-            'kwargs': {
-                'num_units': 700,
+        "attention": {
+            "type": "BahdanauAttention",
+            "kwargs": {
+                "num_units": 700,
             },
-            'attention_layer_size': 700,
+            "attention_layer_size": 700,
         },
-        'max_decoding_length_train': 21,
-        'max_decoding_length_infer': 20,
+        "max_decoding_length_train": 21,
+        "max_decoding_length_infer": 20,
     },
-    'classifier': {
-        'kernel_size': [3, 4, 5],
-        'filters': 128,
-        'other_conv_kwargs': {'padding': 'same'},
-        'dropout_conv': [1],
-        'dropout_rate': 0.5,
-        'num_dense_layers': 0,
-        'num_classes': 1
+    "classifier": {
+        "kernel_size": [3, 4, 5],
+        "filters": 128,
+        "other_conv_kwargs": {"padding": "same"},
+        "dropout_conv": [1],
+        "dropout_rate": 0.5,
+        "num_dense_layers": 0,
+        "num_classes": 1,
     },
-    'opt': {
-        'optimizer': {
-            'type':  'AdamOptimizer',
-            'kwargs': {
-                'learning_rate': 5e-4,
+    "opt": {
+        "optimizer": {
+            "type": "AdamOptimizer",
+            "kwargs": {
+                "learning_rate": 5e-4,
             },
         },
     },
